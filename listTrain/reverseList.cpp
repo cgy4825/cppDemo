@@ -72,14 +72,95 @@ ListNode* ReverseList2(ListNode* head) {
     return newHead;
 }
 
-int main(){
-    ListNode* head=createList();
-    printList(head);
-    ListNode* newHead=ReverseList(head);
-    printList(newHead);
-    
 
-    ListNode* newHead2 = ReverseList2(newHead);
-    printList(newHead2);
+//合并链表
+ListNode* Merge(ListNode* pHead1, ListNode* pHead2) {
+    // write code here
+    if(!pHead1){
+        return pHead2;
+    }else if(!pHead2){
+        return pHead1;
+    }
+    ListNode *head, *tail;
+    if(pHead1->val < pHead2->val){
+        head = pHead1;
+        tail = pHead1;
+        pHead1 = pHead1->next;
+    }else{
+        head = pHead2;
+        tail = pHead2;
+        pHead2 = pHead2->next;
+    }
+    while(pHead1 && pHead2){
+        if(pHead1->val < pHead2->val){
+            tail->next = pHead1;
+            tail = pHead1;
+            pHead1 = pHead1->next;
+        }else{
+            tail->next = pHead2;
+            tail = pHead2;
+            pHead2 = pHead2->next;
+        }
+    }
+    if(!pHead1){
+        tail->next = pHead2;
+    }else{
+        tail->next = pHead1;
+    }
+    return head;
+}
+//使用虚拟头节点合并链表
+ListNode* Merge2(ListNode* pHead1, ListNode* pHead2) {
+    // write code here
+    if (!pHead1) {
+        return pHead2;
+    } else if (!pHead2) {
+        return pHead1;
+    }
+    
+    // 使用一个虚拟头节点简化代码
+    ListNode *dummy = new ListNode(0);
+    ListNode *tail = dummy;
+    
+    while (pHead1 && pHead2) {
+        if (pHead1->val < pHead2->val) {
+            tail->next = pHead1;
+            pHead1 = pHead1->next;
+        } else {
+            tail->next = pHead2;
+            pHead2 = pHead2->next;
+        }
+        tail = tail->next;
+    }
+    
+    // 处理剩余的节点
+    if (!pHead1) {
+        tail->next = pHead2;
+    } else {
+        tail->next = pHead1;
+    }
+    
+    // 返回合并后链表的头节点
+    ListNode *mergedHead = dummy->next;
+    delete dummy; // 释放虚拟头节点内存
+    return mergedHead;
+}
+int main(){
+    //测试反转链表
+    // ListNode* head=createList();
+    // printList(head);
+    // ListNode* newHead=ReverseList(head);
+    // printList(newHead);
+
+    // ListNode* newHead2 = ReverseList2(newHead);
+
+    //测试合并链表
+    ListNode* head1=createList();
+    ListNode* head2=createList();
+    printList(head1);
+    printList(head2);
+    ListNode* newHead3=Merge(head1,head2);
+    printList(newHead3);
+    
     return 0;
 }
