@@ -23,9 +23,10 @@ ListNode* createList(){
     ListNode* head=new ListNode(input);
     ListNode* tail=head;
     while(cin>>input){
+        if(input==-1)return head;//输入-1结束输入
         tail->next=new ListNode(input);
         tail=tail->next;
-        if(input==-1)return head;//输入-1结束输入
+        
     }
     return head;
 }
@@ -54,10 +55,31 @@ ListNode* ReverseList(ListNode* head) {
     return mid;
 
 }
+//递归反转链表方法
+ListNode* ReverseList2(ListNode* head) {
+    // write code here
+    if(head == nullptr || head->next == nullptr)return head;
+    // 递归调用反转剩余链表
+    ListNode* newHead = ReverseList2(head->next);
+    
+    // 将当前节点的下一个节点的 next 指向当前节点
+    head->next->next = head;
+    
+    // 将当前节点的 next 指向 nullptr
+    head->next = nullptr;
+    
+    // 返回新的头节点
+    return newHead;
+}
+
 int main(){
     ListNode* head=createList();
     printList(head);
     ListNode* newHead=ReverseList(head);
     printList(newHead);
+    
+
+    ListNode* newHead2 = ReverseList2(newHead);
+    printList(newHead2);
     return 0;
 }
